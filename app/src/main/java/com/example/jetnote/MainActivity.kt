@@ -27,8 +27,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JetNoteTheme {
-                val noteViewModel : NoteViewModel by viewModels()
-               NotesApp(noteViewModel)
+                //val noteViewModel : NoteViewModel by viewModels()
+               NotesApp()
 
             }
         }
