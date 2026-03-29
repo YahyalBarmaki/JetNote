@@ -62,6 +62,7 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // Room
     implementation(libs.room.runtime)

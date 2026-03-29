@@ -10,17 +10,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetnote.data.NoteDataSource
+import dagger.hilt.android.AndroidEntryPoint
 import com.example.jetnote.model.Note
 import com.example.jetnote.screen.NoteScreen
 import com.example.jetnote.screen.NoteViewModel
 import com.example.jetnote.ui.theme.JetNoteTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +31,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetNoteTheme {
                 //val noteViewModel : NoteViewModel by viewModels()
-               NotesApp()
+                NotesApp()
 
             }
         }
@@ -36,26 +39,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NotesApp(noteViewModel: NoteViewModel = viewModel()){
-    val noteList = noteViewModel.getAllNotes()
-    NoteScreen(notes =noteList,
+fun NotesApp(noteViewModel: NoteViewModel = hiltViewModel()) {
+    val noteList = noteViewModel.noteList.collectAsState().value
+    NoteScreen(
+        notes = noteList,
         onAddNote = { noteViewModel.addNote(it) },
         onRemoveNote = { noteViewModel.removeNote(it) }
     )
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    JetNoteTheme {
-        Greeting("Android")
-    }
 }
